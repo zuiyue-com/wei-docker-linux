@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate wei_log;
+
 use tokio::net::UnixStream;
 use tokio::io::{self, AsyncWriteExt, AsyncReadExt};
 
@@ -87,6 +90,8 @@ async fn main() -> io::Result<()> {
         }
 
         let data = String::from_utf8_lossy(&buffer[..n]);
+
+        info!("{}", data);
 
         let parsed_json = parse_chunked_response(&data);
         for json in parsed_json {
