@@ -137,7 +137,6 @@ async fn main() -> io::Result<()> {
            data.contains("Downloaded newer image for") {
             break;
         }
-
     }
 
     print!("{}", serde_json::json!({
