@@ -133,6 +133,14 @@ async fn main() -> io::Result<()> {
             return Ok(());
         }
 
+        if data.contains("pull access denied") {
+            print!("{}", serde_json::json!({
+                "code": 400,
+                "message": "Pull access denied"
+            }));
+            return Ok(());
+        }
+
         if data.contains("Image is up to date for") ||
            data.contains("Downloaded newer image for") {
             break;
