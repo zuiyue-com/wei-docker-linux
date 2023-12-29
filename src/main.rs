@@ -97,7 +97,7 @@ async fn main() -> io::Result<()> {
         for json in parsed_json {
             match json {
                 Ok(obj) => merge_json_by_id(&mut accumulated_json, obj),
-                Err(e) => println!("Failed to parse JSON: {}", e),
+                Err(_) => {},
             }
         }
 
