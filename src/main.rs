@@ -15,6 +15,8 @@ use std::io::Write;
 async fn main() -> io::Result<()> {
     let args = std::env::args().collect::<Vec<String>>();
     let mut accumulated_json = Map::new();
+
+    info!("args: {:?}", args);
     
     if args.len() < 2 {
         print!("{}", serde_json::json!({
@@ -36,6 +38,7 @@ async fn main() -> io::Result<()> {
     };
 
     let image_name = &args[1];
+    let report_url = String::from_utf8(base64::decode(args[2].clone()).unwrap_or_default()).unwrap_or_default();
 
     let image_name = if image_name.contains(":") {
         format!("{}", image_name)
@@ -46,8 +49,9 @@ async fn main() -> io::Result<()> {
     let image_name_encoded = utf8_percent_encode(&image_name, NON_ALPHANUMERIC).to_string();
     let file_path = format!("/root/.wei/docker/{}.json", image_name_encoded);
     
-    if args.len() > 2 {
-        report(args[2].clone(), file_path.clone()).await;
+    if report_url != "" {
+        info!("report_url: {}", report_url);
+        report(report_url, file_path.clone()).await;
     }
 
     match fs::create_dir_all("/root/.wei/docker/") {
