@@ -176,8 +176,12 @@ async fn report(url: String, file_path: String) {
                 .header("Content-Type", "application/json")
                 .body(content.clone())
                 .send().await {
-                    Ok(_) => {},
-                    Err(_) => {},
+                    Ok(data) => {
+                        info!("response data: {}", data.text().await.unwrap_or_default());
+                    },
+                    Err(err) => {
+                        info!("response error: {}", err);
+                    },
                 };
 
             tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
